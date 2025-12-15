@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aligno Landing Page</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Pretendard Font (Apple Style) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <style>
+        /* Apple System Font Stack + Pretendard enforce */
+        body {
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+        }
+        
+        /* Custom Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Class to trigger animation on scroll */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0; /* Start hidden */
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-500 { animation-delay: 0.5s; }
+
+        .break-keep {
+            word-break: keep-all;
+        }
+
+        /* SVG Path Animation for Card 2 */
+        .draw-path {
+            stroke-dasharray: 500; /* Increased length for a much longer/bolder curve */
+            stroke-dashoffset: 500; /* Initially hidden */
+            transition: stroke-dashoffset 1.4s ease-in-out; /* Slightly longer duration for the longer path */
+        }
+        .group:hover .draw-path {
+            stroke-dashoffset: 0; /* Reveal on hover */
+        }
+
+        /* Blinking Animation for Location Icon */
+        @keyframes blink-effect {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.9); }
+        }
+        /* Changed to trigger immediately on hover for Card 4 */
+        .group:hover .animate-blink-on-hover {
+            animation: blink-effect 1.5s infinite;
+        }
+
+        /* [NEW] Notification Arrival Animation ("Ding!") */
+        @keyframes notification-pop {
+            0% { opacity: 0; transform: translateY(-15px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-notification-pop {
+            /* Triggered via class when visible, using a bouncy bezier */
+            animation: notification-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; 
+            opacity: 0; /* Start hidden */
+            animation-delay: 0.8s; /* Wait for phone to appear */
+        }
+
+        /* [NEW] Staggered Checkmark Animation Logic */
+        /* Initially hide list items */
+        .reveal-on-scroll ul li, 
+        .reveal-on-scroll .space-y-6 > div {
+            opacity: 0;
+            transform: translateX(-15px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
+        }
+        
+        /* Reveal them when parent is visible */
+        .reveal-on-scroll.is-visible ul li, 
+        .reveal-on-scroll.is-visible .space-y-6 > div {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Add delays for staggering effect */
+        .reveal-on-scroll.is-visible ul li:nth-child(1), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(1) { transition-delay: 0.2s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(2), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(2) { transition-delay: 0.35s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(3), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(3) { transition-delay: 0.5s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(4), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(4) { transition-delay: 0.65s; }
+
+        /* Icon Pop Effect */
+        .reveal-on-scroll ul li i, 
+        .reveal-on-scroll .space-y-6 > div i {
+            transform: scale(0);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        .reveal-on-scroll.is-visible ul li i, 
+        .reveal-on-scroll.is-visible .space-y-6 > div i {
+            transform: scale(1);
+        }
+        /* Icon delays to sync with item appearance */
+        .reveal-on-scroll.is-visible ul li:nth-child(1) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(1) i { transition-delay: 0.3s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(2) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(2) i { transition-delay: 0.45s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(3) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(3) i { transition-delay: 0.6s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(4) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(4) i { transition-delay: 0.75s; }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white selection:bg-[#0071e3]/40 bg-[#020617]">
+
+    <!-- Background: Deep Navy Gradient -->
+    <div class="fixed inset-0 -z-10 bg-[#020617]">
+         <div class="absolute inset-0 bg-gradient-to-b from-[#0f172a] via-[#0B1024] to-[#020617]"></div>
+         <div class="absolute top-0 inset-x-0 h-[800px] bg-blue-500/5 blur-[120px]"></div>
+    </div>
+
+    <!-- Navigation - Logo Only -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-5 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center">
+                <img 
+                    src="logo.png" 
+                    alt="Logo" 
+                    class="h-8 md:h-10 w-auto object-contain"
+                    onerror="this.onerror=null; this.src='https://via.placeholder.com/120x40/0B1024/FFFFFF?text=Logo';"
+                >
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!-- Increased pb-10 to pb-64 to add more space below the button -->
+    <section class="pt-40 pb-64 px-6 relative">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+          
+            <!-- Headline -->
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-8 text-white animate-slide-up flex flex-col items-center">
+                <span class="block mb-4 md:mb-6 leading-tight">철도 이용자에게 필요한 정보는</span>
+                <span class="block text-[#2997ff] leading-tight">
+                    <!-- Changed rounded-lg to rounded-none for sharp corners -->
+                    항상 <span class="inline-block font-black text-[1.1em] px-2 rounded-none bg-[#0071e3] text-white mx-1 shadow-[0_0_20px_rgba(0,113,227,0.4)]">지금</span> 입니다.
+                </span>
+            </h1>
+
+            <p class="text-[19px] md:text-[21px] font-medium text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10 break-keep animate-slide-up delay-100 tracking-tight">
+                기차를 타기 전에도, 타고 있는 중에도, 그리고 내린 직후에도 말이죠.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24 animate-slide-up delay-200">
+                <!-- Added onclick event for smooth scroll -->
+                <button onclick="document.getElementById('problem-section').scrollIntoView({ behavior: 'smooth' })" class="font-medium rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 px-8 py-4 text-[17px] tracking-tight bg-[#0071e3] text-white hover:bg-[#0077ED] shadow-lg shadow-blue-500/30 border border-blue-400/20">
+                    보러가기
+                    <i data-lucide="arrow-right" class="w-[18px] h-[18px]" stroke-width="2.5"></i>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Problem Statement (iPhone Detail Page Style) -->
+    <!-- Added id="problem-section" for scrolling -->
+    <section id="problem-section" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Section Header -->
+            <div class="text-left mb-20 reveal-on-scroll">
+                <!-- Changed h2 to use block spans for explicit vertical spacing preventing overlap -->
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-gray-400">
+                    <span class="block mb-0 leading-tight">문제는 정보가 없는 것이 아니라,</span>
+                    <span class="block text-white leading-relaxed">
+                        <!-- Reduced vertical padding to py-0 for the slimmest highlighter look -->
+                        <span class="bg-[#0071e3] px-2 py-0">'지금 내 상황 기준'</span>으로 바로 쓸 수 있는 정보가 없다는 점입니다.
+                    </span>
+                </h2>
+            </div>
+
+            <!-- 1 Column Grid Layout -->
+            <div class="grid grid-cols-1 gap-6">
+                
+                <!-- Card 1: 매진된 열차 -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden">
+                    
+                    <!-- Background Decoration Icon: Refresh -->
+                    <!-- Moved from bottom corner to vertical center on the right -->
+                    <div class="absolute -right-6 top-1/2 -translate-y-1/2 opacity-[0.05] group-hover:opacity-10 transition-all duration-700 transform rotate-12 group-hover:rotate-[180deg] pointer-events-none">
+                        <i data-lucide="refresh-cw" class="w-40 h-40 text-white"></i>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="ticket" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">매진된 열차</h3>
+                        <p class="text-gray-400 text-lg font-medium leading-relaxed">매진으로 인해 소중한 시간을 써가며 혹여나 취소표가 나올까 기다리며 반복하는 새로고침</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: 실시간 위치 확인 -->
+                <!-- Added relative and overflow-hidden for custom animation positioning -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden">
+                    
+                    <!-- Content -->
+                    <div class="relative z-10 max-w-[70%]">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="map-pin" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">실시간 위치 확인</h3>
+                        <p class="text-gray-400 text-lg font-medium leading-relaxed">내 열차 위치 · 다음 역 · 지연 · 총 도착시간</p>
+                    </div>
+
+                    <!-- Custom BOLD S-Curve Path Animation (Right Side) -->
+                    <div class="absolute top-1/2 right-10 -translate-y-1/2 w-48 h-40 pointer-events-none hidden md:block">
+                        <svg width="100%" height="100%" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg" class="overflow-visible">
+                            <!-- Start Point -->
+                            <circle cx="100" cy="10" r="4" class="fill-gray-600" />
+                            
+                            <!-- Background Dotted Line -->
+                            <path d="M100 10 C 0 50, 200 110, 100 150" stroke="#4b5563" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round" class="opacity-30" />
+
+                            <!-- Animated White Line -->
+                            <path d="M100 10 C 0 50, 200 110, 100 150" stroke="white" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round" class="draw-path opacity-0 group-hover:opacity-100" />
+                        </svg>
+
+                        <!-- End Point Icon (Bottom Center) -->
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-gray-600 transition-colors duration-300 delay-1000 group-hover:text-[#0071e3]">
+                            <i data-lucide="map-pin" class="w-6 h-6 fill-current"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Card 3: 분실물 신고 -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden">
+                    
+                    <!-- Background Decoration Icon: Search -->
+                    <div class="absolute -right-8 top-1/2 -translate-y-1/2 opacity-[0.05] group-hover:opacity-10 transition-all duration-700 transform group-hover:scale-110 group-hover:-rotate-12 pointer-events-none">
+                        <i data-lucide="search" class="w-48 h-48 text-white"></i>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="package-search" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">분실물 신고</h3>
+                        <p class="text-gray-400 text-lg font-medium leading-relaxed">하차 직후 신고 → 운행 중 회수 시도</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: 시설 위치 안내 -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden">
+                    
+                    <!-- Background Decoration: Building Layout with Pin -->
+                    <div class="absolute -right-10 top-1/2 -translate-y-1/2 opacity-[0.05] group-hover:opacity-10 transition-all duration-700 transform group-hover:scale-105 group-hover:rotate-3 pointer-events-none">
+                        <!-- Custom SVG for Floor Plan / Layout -->
+                        <svg width="220" height="220" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Building Outline (Rounded Rect) -->
+                            <rect x="5" y="15" width="90" height="70" rx="8" stroke="white" stroke-width="3" />
+                            
+                            <!-- Grid Dividers (Asymmetric Layout) -->
+                            <line x1="5" y1="45" x2="95" y2="45" stroke="white" stroke-width="3" />
+                            <line x1="32" y1="15" x2="32" y2="85" stroke="white" stroke-width="3" />
+                            <line x1="68" y1="15" x2="68" y2="85" stroke="white" stroke-width="3" />
+
+                            <!-- Location Pin in First Cell (Top Left) -->
+                            <!-- ADDED: animate-blink-on-hover class to the pin -->
+                            <path class="animate-blink-on-hover" d="M19 23C15.134 23 12 26.134 12 30C12 35.25 19 42 19 42C19 42 26 35.25 26 30C26 26.134 22.866 23 19 23ZM19 32C17.8954 32 17 31.1046 17 30C17 28.8954 17.8954 28 19 28C20.1046 28 21 28.8954 21 30C21 31.1046 20.1046 32 19 32Z" fill="white" />
+                        </svg>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="navigation" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">시설 위치 안내</h3>
+                        <p class="text-gray-400 text-lg font-medium leading-relaxed">지금 내 위치 기준으로 빠르게 안내</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MOVED & TRANSFORMED: Dashboard -> iPhone Lockscreen Section -->
+    <section class="py-24 px-6 relative overflow-hidden">
+        <!-- Background Glow -->
+        <div class="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
+
+        <div class="max-w-6xl mx-auto">
+            <!-- Changed Layout: Grid with balanced spacing -->
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left Column: iPhone Mockup -->
+                <!-- Aligned to center of the left column for better balance -->
+                <div class="reveal-on-scroll flex justify-center">
+                    <!-- iPhone Bezel -->
+                    <div class="relative w-[300px] h-[640px] md:w-[320px] md:h-[680px] bg-[#1d1d1f] rounded-[3.5rem] p-3 shadow-2xl border-[6px] border-[#333]">
+                        <!-- Screen -->
+                        <!-- Changed pt-12 to pt-4 to move status bar up -->
+                        <div class="relative w-full h-full bg-white rounded-[2.8rem] overflow-hidden flex flex-col items-center pt-4 text-[#1d1d1f] border border-gray-200">
+                            
+                            <!-- Dynamic Island (Changed from Notch) -->
+                            <div class="absolute top-3 left-1/2 -translate-x-1/2 w-[100px] h-[28px] bg-black rounded-full z-20"></div>
+
+                            <!-- Status Bar (Moved up by adjusting parent padding) -->
+                            <div class="w-full flex justify-between px-8 text-xs font-semibold mb-8 text-black items-center h-[28px]">
+                                <span>9:41</span>
+                                <div class="flex items-center gap-1">
+                                    <i data-lucide="signal" class="w-3 h-3 text-black"></i>
+                                    <i data-lucide="wifi" class="w-3 h-3 text-black"></i>
+                                    <i data-lucide="battery" class="w-3 h-3 text-black"></i>
+                                </div>
+                            </div>
+
+                            <!-- Lock Screen Content -->
+                            <div class="flex flex-col items-center w-full px-5 flex-1">
+                                <!-- Lock Icon (Black) -->
+                                <i data-lucide="lock" class="w-5 h-5 mb-4 text-black/40"></i>
+                                
+                                <!-- Date & Time (Black) -->
+                                <div class="text-[#1d1d1f]/60 text-lg font-medium mb-1">1월 24일 금요일</div>
+                                <div class="text-7xl font-bold tracking-tighter mb-10 text-[#1d1d1f]">9:41</div>
+
+                                <!-- Notification / Widget Stack -->
+                                <div class="w-full space-y-3">
+                                    <!-- Aligno Live Activity Widget (Cancellation Ticket Alert) -->
+                                    <!-- ADDED: animate-notification-pop class -->
+                                    <div class="animate-notification-pop w-full bg-white rounded-[24px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 relative overflow-hidden">
+                                        
+                                        <!-- Top Row -->
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="w-7 h-7 rounded-full bg-[#0071e3] flex items-center justify-center shadow-sm">
+                                                    <!-- Changed A to K as requested -->
+                                                    <img src="logo.png" alt="K" class="w-3.5 h-3.5 invert" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                                    <span style="display:none" class="text-xs font-bold text-white">K</span>
+                                                </div>
+                                                <span class="text-[13px] font-bold tracking-tight text-gray-900">KORAIL NOW</span>
+                                            </div>
+                                            <div class="bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
+                                                <span class="text-[10px] font-bold text-red-500 animate-pulse">취소표 발생</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Train Info -->
+                                        <div class="flex justify-between items-end mb-4">
+                                            <div>
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <span class="text-2xl font-black text-gray-900">서울</span>
+                                                    <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                                                    <span class="text-2xl font-black text-gray-900">대전</span>
+                                                </div>
+                                                <div class="text-sm font-medium text-gray-500">KTX 023 · 5호차 12A</div>
+                                            </div>
+                                            <!-- Removed "즉시 예약" button as requested -->
+                                        </div>
+                                        
+                                        <!-- Info Message -->
+                                        <div class="relative w-full bg-gray-50 rounded-xl p-3 border border-gray-100">
+                                            <div class="flex items-center gap-2 text-xs font-semibold text-gray-600">
+                                                <i data-lucide="bell-ring" class="w-3.5 h-3.5 text-[#0071e3]"></i>
+                                                <!-- Changed notification text as requested -->
+                                                <span>요청하신 구간 빈자리 발생!</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Another Notification (Stacked) -->
+                                    <div class="w-[96%] mx-auto bg-white/80 backdrop-blur-md rounded-[20px] p-3 shadow-sm border border-gray-100 scale-95 opacity-50 -mt-2">
+                                        <div class="h-4 w-1/2 bg-gray-200 rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Buttons (Dark semi-transparent on white) -->
+                            <div class="w-full px-10 pb-10 flex justify-between items-end mt-auto">
+                                <div class="w-12 h-12 rounded-full bg-black/5 backdrop-blur-xl flex items-center justify-center border border-black/5">
+                                    <i data-lucide="flashlight" class="w-6 h-6 text-gray-600 fill-current"></i>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-black/5 backdrop-blur-xl flex items-center justify-center border border-black/5">
+                                    <i data-lucide="camera" class="w-6 h-6 text-gray-600 fill-current"></i>
+                                </div>
+                            </div>
+
+                            <!-- Home Indicator (Black) -->
+                            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-black rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Content -->
+                <div class="reveal-on-scroll text-left">
+                    <span class="text-blue-400 font-semibold tracking-wide uppercase text-sm mb-4 block">기능 1</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                        취소표 실시간 알림.<br>
+                        <span class="text-gray-400">
+                            매진된 열차의 취소표를<br>
+                            얻기 위해 이용자는<br>
+                            반복적으로 새로고침을<br>
+                            해야 했습니다.
+                        </span>
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 break-keep">
+                        취소표 실시간 알림은 출발지·도착지·날짜·시간을 선택해 알림을 등록하면, 취소가 발생하는 순간 즉시 알려주는 기능입니다.<br>
+                        예매는 기존 코레일 앱·웹에서 선착순 방식 그대로 유지됩니다.
+                    </p>
+                    
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center gap-3 text-white/90">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-[#0071e3]"></i>
+                            <span>출발, 도착 날짜 및 시간 선택 -> 알림 등록</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-white/90">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-[#0071e3]"></i>
+                            <span>취소 발생 즉시 알림</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-white/90">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-[#0071e3]"></i>
+                            <span>예매는 기존 코레일 앱/웹 에서 선착순 유지</span>
+                        </li>
+                    </ul>
+
+                    <!-- Removed "자세히 알아보기" button -->
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Feature 2 (Real-time Location) -->
+    <section class="py-24 px-6 relative border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <!-- Text Content (Left) -->
+                <div class="reveal-on-scroll text-left order-2 md:order-1">
+                    <span class="text-blue-400 font-semibold tracking-wide uppercase text-sm mb-4 block">기능 2</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                        내 열차 실시간 위치조회
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 break-keep">
+                        전광판 앞에서 기다리지 않아도 탑승할 열차 위치와 도착 정보를 한 화면에서 확인할 수 있습니다.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-[#0071e3]"></i></div>
+                            <span>도착까지 남은 시간 안내</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-[#0071e3]"></i></div>
+                            <span>열차 지연 여부 안내</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-[#0071e3]"></i></div>
+                            <span>총 도착시간 안내</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Visual Content (Right) -->
+                <div class="reveal-on-scroll order-1 md:order-2">
+                    <div class="aspect-video bg-[#1d1d1f] rounded-[2rem] border border-white/10 flex items-center justify-center relative overflow-hidden group hover:border-white/20 transition-all duration-500 shadow-2xl p-6 md:p-10">
+                        <!-- Background Glow -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/5 opacity-60"></div>
+                        
+                        <!-- UI Snippet Widget -->
+                        <div class="relative z-10 w-full max-w-[340px] bg-[#2c2c2e]/80 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 shadow-2xl transform group-hover:scale-[1.02] transition-transform duration-500">
+                            <!-- Header -->
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-[#0071e3]/20 flex items-center justify-center">
+                                        <i data-lucide="train-front" class="w-5 h-5 text-[#0071e3]"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-white">서울 <span class="text-white/40 px-1">→</span> 대전</div>
+                                        <div class="text-[11px] text-white/60 font-medium">KTX 023 · 5호차 12A</div>
+                                    </div>
+                                </div>
+                                <div class="px-2.5 py-1 rounded-full bg-white/10 border border-white/5">
+                                    <span class="text-[10px] font-semibold text-[#30d158] flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#30d158] animate-pulse"></span>
+                                        운행중
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Main Time (Remaining) -->
+                            <div class="text-center mb-6">
+                                <div class="text-xs font-semibold text-white/50 mb-1">도착까지 남은 시간</div>
+                                <div class="text-5xl font-bold text-white tracking-tight tabular-nums">
+                                    18<span class="text-2xl text-white/40 ml-1">분</span>
+                                </div>
+                            </div>
+
+                            <!-- Stats Grid -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <!-- Delay Info -->
+                                <div class="bg-[#3a3a3c]/50 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center gap-1">
+                                    <span class="text-[10px] font-semibold text-white/50">열차 지연</span>
+                                    <span class="text-sm font-bold text-[#ff453a] flex items-center gap-1">
+                                        <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> +3분
+                                    </span>
+                                </div>
+                                <!-- Arrival Info -->
+                                <div class="bg-[#3a3a3c]/50 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center gap-1">
+                                    <span class="text-[10px] font-semibold text-white/50">총 도착시간</span>
+                                    <span class="text-sm font-bold text-white tabular-nums">14:25</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Feature 3 (Lost & Found) -->
+    <section class="py-24 px-6 relative border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <!-- Visual Content (Left - Alternating Layout) -->
+                <div class="reveal-on-scroll">
+                    <div class="aspect-video bg-[#1d1d1f] rounded-[2rem] border border-white/10 flex items-center justify-center relative overflow-hidden group hover:border-white/20 transition-all duration-500 shadow-2xl p-8">
+                        <!-- Background Glow -->
+                        <div class="absolute inset-0 bg-gradient-to-bl from-purple-500/10 via-transparent to-purple-500/5 opacity-60"></div>
+                        
+                        <!-- UI Widget: Lost Item Report -->
+                        <div class="relative z-10 w-full max-w-[320px] bg-[#2c2c2e]/90 backdrop-blur-xl rounded-[24px] border border-white/10 p-5 shadow-2xl flex flex-col gap-4 transform group-hover:scale-[1.02] transition-transform duration-500">
+                            <!-- Header -->
+                            <div class="flex items-center justify-between border-b border-white/5 pb-3">
+                                <span class="text-sm font-bold text-white">분실물 신고</span>
+                                <span class="text-[10px] text-white/40 bg-white/5 px-2 py-0.5 rounded-full">AI 자동입력</span>
+                            </div>
+
+                            <!-- Auto-filled Train Info -->
+                            <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                                    <i data-lucide="train-front" class="w-4 h-4 text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-white/50">탑승 정보 (자동)</div>
+                                    <div class="text-xs font-bold text-white">KTX 023 · 5호차 12A</div>
+                                </div>
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-[#30d158] ml-auto"></i>
+                            </div>
+
+                            <!-- Item Type & Photo -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex flex-col gap-1">
+                                    <span class="text-[10px] text-white/50">물품 종류</span>
+                                    <div class="text-xs font-bold text-white flex items-center gap-1">
+                                        <i data-lucide="headphones" class="w-3 h-3 text-white/80"></i> 전자제품
+                                    </div>
+                                </div>
+                                <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex flex-col gap-1 relative overflow-hidden">
+                                    <span class="text-[10px] text-white/50">사진 첨부</span>
+                                    <div class="flex items-center gap-1 text-xs text-purple-400 font-bold">
+                                        1장 완료
+                                    </div>
+                                    <!-- Tiny preview icon -->
+                                    <div class="absolute right-2 bottom-2 w-6 h-6 bg-white/10 rounded-md flex items-center justify-center">
+                                       <i data-lucide="image" class="w-3 h-3 text-white/60"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3 rounded-xl transition-colors shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2">
+                                신고 접수하기
+                                <i data-lucide="send" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Content (Right) -->
+                <div class="reveal-on-scroll text-left">
+                    <span class="text-purple-400 font-semibold tracking-wide uppercase text-sm mb-4 block">기능 3</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                        AI 분실물 실시간 신고
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 break-keep">
+                        열차에서 내린 직후 분실 사실을 인지해도, 신고 절차가 복잡해 회수가 어려운 경우가 많았습니다.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-purple-500"></i></div>
+                            <span>열차/호차/좌석 정보 자동 인식</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-purple-500"></i></div>
+                            <span>분실물 종류·위치·사진 입력 → 즉시 전달</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-purple-500"></i></div>
+                            <span>회수 실패 시 도착역 분실물 센터로 자동 이관</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Feature 4 (Facilities) -->
+    <section class="py-24 px-6 relative border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <!-- Text Content (Left) -->
+                <div class="reveal-on-scroll text-left order-2 md:order-1">
+                    <span class="text-emerald-400 font-semibold tracking-wide uppercase text-sm mb-4 block">기능 4</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                        부가시설 위치 안내
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 break-keep">
+                        열차 안이나 역에 도착했을 때, 화장실, 편의시설, 출입구 등 위치를 몰라 불필요하게 이동해야하는 불편이 발생합니다.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500"></i></div>
+                            <span class="break-keep"><strong class="text-white">열차:</strong> 현재 호차 기준 가장 가까운 시설 안내</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500"></i></div>
+                            <span class="break-keep"><strong class="text-white">역:</strong> 출입구/편의시설/화장실을 목적 기준으로 안내</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/90">
+                            <div class="mt-1"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500"></i></div>
+                            <span class="break-keep"><strong class="text-white">출입구:</strong> 택시/버스 등 이동수단 기준 추천</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Visual Content (Right) -->
+                <div class="reveal-on-scroll order-1 md:order-2">
+                    <div class="aspect-video bg-[#1d1d1f] rounded-[2rem] border border-white/10 flex items-center justify-center relative overflow-hidden group hover:border-white/20 transition-all duration-500 shadow-2xl p-8">
+                        <!-- Background Glow -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-emerald-500/5 opacity-60"></div>
+                        
+                        <!-- UI Widget: Facility Guide -->
+                        <div class="relative z-10 w-full max-w-[320px] bg-[#2c2c2e]/90 backdrop-blur-xl rounded-[24px] border border-white/10 p-5 shadow-2xl flex flex-col gap-4 transform group-hover:scale-[1.02] transition-transform duration-500">
+                            
+                            <!-- [VIEW 1] Train Interior (Default) -->
+                            <div id="facility-view-train" class="flex flex-col gap-4 transition-opacity duration-300">
+                                <!-- Header: Current Location -->
+                                <div class="flex items-center justify-between border-b border-white/5 pb-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                            <i data-lucide="map-pin" class="w-3 h-3 text-emerald-400"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-white/50 block">현재 내 위치</span>
+                                            <span class="text-sm font-bold text-white">5호차 12A</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">안내 중</span>
+                                </div>
+
+                                <!-- Nearest Facilities List -->
+                                <div class="space-y-2">
+                                    <!-- Facility 1: Restroom -->
+                                    <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex items-center justify-between hover:bg-[#3a3a3c] transition-colors cursor-pointer">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-gray-700/50 flex items-center justify-center">
+                                                <span class="text-lg">🚻</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-bold text-white">화장실</div>
+                                                <div class="text-[10px] text-white/50">가장 가까움</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xs font-bold text-emerald-400">4호차</div>
+                                            <div class="text-[10px] text-white/40 flex items-center justify-end gap-0.5">
+                                                <i data-lucide="arrow-up" class="w-3 h-3"></i> 앞쪽
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Facility 2: Vending Machine -->
+                                    <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex items-center justify-between hover:bg-[#3a3a3c] transition-colors cursor-pointer">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-gray-700/50 flex items-center justify-center">
+                                                <span class="text-lg">🥤</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-bold text-white">자판기</div>
+                                                <div class="text-[10px] text-white/50">음료/스낵</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xs font-bold text-white">6호차</div>
+                                            <div class="text-[10px] text-white/40 flex items-center justify-end gap-0.5">
+                                                <i data-lucide="arrow-down" class="w-3 h-3"></i> 뒤쪽
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Facility 3: Exit -->
+                                    <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex items-center justify-between hover:bg-[#3a3a3c] transition-colors cursor-pointer">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-gray-700/50 flex items-center justify-center">
+                                                <span class="text-lg">🚪</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-bold text-white">빠른 하차</div>
+                                                <div class="text-[10px] text-white/50">에스컬레이터</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xs font-bold text-white">5-1번</div>
+                                            <div class="text-[10px] text-white/40 flex items-center justify-end gap-0.5">
+                                                <i data-lucide="arrow-right-circle" class="w-3 h-3"></i> 바로 앞
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- [VIEW 2] Station Interior (Hidden) -->
+                            <!-- Replaced List with SVG Map -->
+                            <div id="facility-view-station" class="hidden flex-col gap-4 transition-opacity duration-300">
+                                <!-- Header: Station Location -->
+                                <div class="flex items-center justify-between border-b border-white/5 pb-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-[#0071e3]/20 flex items-center justify-center">
+                                            <i data-lucide="map" class="w-3 h-3 text-[#0071e3]"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-white/50 block">현재 내 위치</span>
+                                            <span class="text-sm font-bold text-white">서울역 승강장 11</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] text-[#0071e3] bg-[#0071e3]/10 px-2 py-0.5 rounded-full border border-[#0071e3]/20">도착 완료</span>
+                                </div>
+
+                                <!-- Station Map Visual -->
+                                <div class="bg-[#3a3a3c]/50 rounded-xl p-4 border border-white/5 h-[180px] relative overflow-hidden flex items-center justify-center">
+                                    <!-- Simple SVG Map -->
+                                    <svg viewBox="0 0 300 150" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Floor -->
+                                        <rect x="10" y="10" width="280" height="130" rx="8" fill="#2c2c2e" stroke="#52525b" stroke-width="2"/>
+                                        
+                                        <!-- Walls/Dividers -->
+                                        <line x1="100" y1="10" x2="100" y2="80" stroke="#52525b" stroke-width="2"/>
+                                        <line x1="200" y1="10" x2="200" y2="80" stroke="#52525b" stroke-width="2"/>
+                                        
+                                        <!-- Facilities Icons & Text -->
+                                        
+                                        <!-- Left Area: Transfer -->
+                                        <g transform="translate(40, 45)">
+                                            <rect x="-20" y="-20" width="40" height="40" rx="4" fill="#1e3a8a" fill-opacity="0.3"/>
+                                            <text x="0" y="5" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="bold">1호선</text>
+                                            <text x="0" y="25" text-anchor="middle" fill="#9ca3af" font-size="8">환승</text>
+                                        </g>
+
+                                        <!-- Center Area: You -->
+                                        <g transform="translate(150, 100)">
+                                            <circle cx="0" cy="0" r="6" fill="#0071e3"/>
+                                            <circle cx="0" cy="0" r="15" stroke="#0071e3" stroke-width="1" opacity="0.5">
+                                                <animate attributeName="r" from="6" to="20" dur="1.5s" repeatCount="indefinite"/>
+                                                <animate attributeName="opacity" from="0.8" to="0" dur="1.5s" repeatCount="indefinite"/>
+                                            </circle>
+                                            <text x="0" y="20" text-anchor="middle" fill="white" font-size="10" font-weight="bold">현위치</text>
+                                        </g>
+
+                                        <!-- Right Area: Exit -->
+                                        <g transform="translate(260, 45)">
+                                            <rect x="-20" y="-20" width="40" height="40" rx="4" fill="#064e3b" fill-opacity="0.3"/>
+                                            <text x="0" y="5" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">1번 출구</text>
+                                            <text x="0" y="25" text-anchor="middle" fill="#9ca3af" font-size="8">나가는 곳</text>
+                                        </g>
+
+                                        <!-- Top Center: Restroom -->
+                                        <g transform="translate(150, 30)">
+                                            <text x="0" y="0" text-anchor="middle" font-size="16">🚻</text>
+                                        </g>
+
+                                        <!-- Path Line -->
+                                        <path d="M150 100 L150 60 L240 60 L240 45" stroke="white" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Moved Toggle Buttons Here (Outside the aspect-video block) -->
+                    <div class="flex justify-center mt-6">
+                        <div class="flex gap-3 w-full max-w-[320px]">
+                            <!-- Buttons kept same size, preventing shrink -->
+                            <button id="btn-train" onclick="switchFacilityView('train')" class="flex-1 bg-emerald-600 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-lg shadow-emerald-900/20 hover:bg-emerald-500 border border-white/10">
+                                열차 내부
+                            </button>
+                            <button id="btn-station" onclick="switchFacilityView('station')" class="flex-1 bg-[#2c2c2e] text-gray-400 text-sm font-bold py-3 rounded-xl transition-all hover:bg-[#3a3a3c] hover:text-white border border-white/10">
+                                역사 내부
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: KORAIL NOW (AI Solution) - Added based on photo -->
+    <section class="py-24 px-6 relative border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                
+                <!-- Visual Content (Left - iPhone Mockup) -->
+                <div class="reveal-on-scroll flex justify-center md:justify-start">
+                    <!-- iPhone Bezel -->
+                    <div class="relative w-[300px] h-[600px] bg-[#1d1d1f] rounded-[3rem] p-3 shadow-2xl border-[6px] border-[#333]">
+                        <!-- Screen -->
+                        <div class="relative w-full h-full bg-white rounded-[2.5rem] overflow-hidden flex flex-col items-center pt-4 text-[#1d1d1f] border border-gray-200">
+                            
+                            <!-- Dynamic Island -->
+                            <div class="absolute top-3 left-1/2 -translate-x-1/2 w-[90px] h-[24px] bg-black rounded-full z-20"></div>
+
+                            <!-- Status Bar -->
+                            <div class="w-full flex justify-between px-6 text-[10px] font-semibold mb-6 text-black items-center h-[24px]">
+                                <span>9:41</span>
+                                <div class="flex items-center gap-1">
+                                    <i data-lucide="signal" class="w-2.5 h-2.5 text-black"></i>
+                                    <i data-lucide="wifi" class="w-2.5 h-2.5 text-black"></i>
+                                    <i data-lucide="battery" class="w-2.5 h-2.5 text-black"></i>
+                                </div>
+                            </div>
+
+                            <!-- Screen Content -->
+                            <div class="w-full px-4 flex flex-col gap-3">
+                                
+                                <!-- Widget 1: My Train Location -->
+                                <div class="bg-gray-100 rounded-2xl p-4 shadow-sm border border-gray-200">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <div class="w-6 h-6 rounded-full bg-[#0071e3] flex items-center justify-center">
+                                            <i data-lucide="train-front" class="w-3 h-3 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs font-bold text-gray-900">내 열차 위치</div>
+                                            <!-- Changed KTX-001 to KTX-023 -->
+                                            <div class="text-[10px] text-gray-500">KTX-023</div>
+                                        </div>
+                                        <div class="ml-auto">
+                                            <i data-lucide="more-horizontal" class="w-4 h-4 text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <div class="text-xs text-gray-500">현재 위치</div>
+                                        <!-- Changed '대전역 통과' to '천안아산역 통과' -->
+                                        <div class="text-sm font-bold text-gray-900">천안아산역 통과</div>
+                                    </div>
+                                    <div class="flex justify-between items-end mt-1">
+                                        <div class="text-xs text-gray-500">도착 예정</div>
+                                        <div class="text-sm font-bold text-[#0071e3]">15분 후</div>
+                                    </div>
+                                </div>
+
+                                <!-- Widget 2: Cancellation Alert Registered -->
+                                <div class="bg-[#2c2c2e] rounded-2xl p-4 shadow-lg border border-gray-700">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="text-xs font-bold text-white">취소표 알림 등록됨</span>
+                                        <i data-lucide="check" class="w-3 h-3 text-[#30d158]"></i>
+                                    </div>
+                                    <div class="text-[11px] text-gray-400">
+                                        <!-- Changed '부산' to '대전' and date to '12월 15일' -->
+                                        서울 <i data-lucide="arrow-right" class="w-3 h-3 inline mx-0.5"></i> 대전 | 12월 15일 14:00
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Bottom Blur Gradient (Decoration) -->
+                            <div class="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-[#0071e3]/10 to-transparent pointer-events-none"></div>
+
+                            <!-- Home Indicator -->
+                            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1 bg-black rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Content (Right) -->
+                <div class="reveal-on-scroll text-left">
+                    <span class="text-gray-400 font-semibold tracking-wide uppercase text-sm mb-4 block bg-white/10 px-3 py-1 rounded-full w-fit">실용형 AI 솔루션</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                        KORAIL NOW.<br>
+                        <span class="text-[#0071e3]">지금 필요한 정보를<br>바로 알려주는</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-10 break-keep">
+                        철도 이용 전·중·후, 지금 필요한 정보를 바로 알려주는 실용형 AI 철도 챗봇 서비스입니다.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <!-- Item 1 -->
+                        <div class="flex gap-4">
+                            <div class="mt-1 w-6 h-6 rounded-full bg-[#0071e3] flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-white stroke-[3]"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">취소표 알림 기능</h4>
+                                <p class="text-gray-400 text-sm">매진된 열차의 빈자리를 실시간으로 감지해 알려줍니다</p>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="flex gap-4">
+                            <div class="mt-1 w-6 h-6 rounded-full bg-[#0071e3] flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-white stroke-[3]"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">열차 실시간 조회</h4>
+                                <p class="text-gray-400 text-sm">내 열차 위치와 도착 정보를 한 화면에서 확인합니다</p>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="flex gap-4">
+                            <div class="mt-1 w-6 h-6 rounded-full bg-[#0071e3] flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-white stroke-[3]"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">분실물 조회</h4>
+                                <p class="text-gray-400 text-sm">복잡한 절차 없이 간편하게 분실물을 신고하고 조회합니다</p>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="flex gap-4">
+                            <div class="mt-1 w-6 h-6 rounded-full bg-[#0071e3] flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-white stroke-[3]"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">부가서비스</h4>
+                                <p class="text-gray-400 text-sm">화장실, 편의시설 등 필요한 시설을 위치 기반으로 안내합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Final CTA (Based on Photo Content) -->
+    <section class="py-32 px-6 bg-[#0B1024] border-t border-white/5 relative overflow-hidden">
+        <!-- Center Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] -z-10"></div>
+
+        <div class="max-w-4xl mx-auto text-center">
+            
+            <h2 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight reveal-on-scroll">
+                철도 이용 경험을<br />
+                <span class="text-[#0071e3]">한 단계 더 실용적으로</span>
+            </h2>
+            
+            <p class="text-gray-400 text-xl font-medium mb-12 reveal-on-scroll delay-100">
+                지금 필요한 정보를 가장 빠르고 정확하게 제공합니다.
+            </p>
+
+            <button class="reveal-on-scroll delay-200 font-medium rounded-full transition-all active:scale-95 inline-flex items-center justify-center gap-2 px-10 py-5 text-lg tracking-tight bg-[#0071e3] text-white hover:bg-[#0077ED] shadow-xl shadow-blue-500/30 border border-blue-400/20 mb-20">
+                지금 시작하기
+                <i data-lucide="arrow-right" class="w-5 h-5" stroke-width="2.5"></i>
+            </button>
+
+            <!-- 3 Features Grid from Photo -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Item 1 -->
+                <div class="reveal-on-scroll group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300">
+                    <div class="text-2xl font-bold text-white mb-2">24/7</div>
+                    <div class="text-gray-400 font-medium">실시간 지원</div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="reveal-on-scroll delay-100 group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300">
+                    <div class="text-2xl font-bold text-white mb-2">AI</div>
+                    <div class="text-gray-400 font-medium">지능형 분석</div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="reveal-on-scroll delay-200 group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300">
+                    <div class="text-2xl font-bold text-white mb-2">즉시</div>
+                    <div class="text-gray-400 font-medium">빠른 응답</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.remove('bg-transparent', 'py-5');
+                navbar.classList.add('bg-[#0B1024]/80', 'backdrop-blur-md', 'border-b', 'border-white/5', 'py-3');
+            } else {
+                navbar.classList.add('bg-transparent', 'py-5');
+                navbar.classList.remove('bg-[#0B1024]/80', 'backdrop-blur-md', 'border-b', 'border-white/5', 'py-3');
+            }
+        });
+
+        // Intersection Observer for scroll animations (Apple style fade-in)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach((element) => {
+            observer.observe(element);
+        });
+
+        // Function to toggle between Train and Station Facility views
+        function switchFacilityView(view) {
+            const trainView = document.getElementById('facility-view-train');
+            const stationView = document.getElementById('facility-view-station');
+            const btnTrain = document.getElementById('btn-train');
+            const btnStation = document.getElementById('btn-station');
+
+            // Fixed Button Classes to prevent shrinking (removed active:scale-95 from original button logic)
+            // Consistent classes: flex-1, text-sm, font-bold, py-3, rounded-xl, transition-all, border
+            const commonClasses = "flex-1 text-sm font-bold py-3 rounded-xl transition-all border border-white/10";
+            
+            if (view === 'train') {
+                trainView.classList.remove('hidden');
+                trainView.classList.add('flex');
+                stationView.classList.add('hidden');
+                stationView.classList.remove('flex');
+
+                // Active Train
+                btnTrain.className = `${commonClasses} bg-emerald-600 text-white shadow-lg shadow-emerald-900/20 hover:bg-emerald-500`;
+                // Inactive Station
+                btnStation.className = `${commonClasses} bg-[#2c2c2e] text-gray-400 hover:bg-[#3a3a3c] hover:text-white`;
+            } else {
+                trainView.classList.add('hidden');
+                trainView.classList.remove('flex');
+                stationView.classList.remove('hidden');
+                stationView.classList.add('flex');
+
+                // Inactive Train
+                btnTrain.className = `${commonClasses} bg-[#2c2c2e] text-gray-400 hover:bg-[#3a3a3c] hover:text-white`;
+                // Active Station
+                btnStation.className = `${commonClasses} bg-[#0071e3] text-white shadow-lg shadow-blue-900/20 hover:bg-[#005bb5]`;
+            }
+            
+            // Re-initialize icons for newly visible elements just in case
+            setTimeout(() => lucide.createIcons(), 50);
+        }
+    </script>
+</body>
+</html>
