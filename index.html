@@ -164,33 +164,50 @@
             animation-delay: 3.5s;
         }
 
-        /* [UPDATED KTX ARRIVAL ANIMATION] */
-        /* Start from far right/top, arrive at center/bottom and STOP */
-        @keyframes ktx-arrive-stop {
+        /* [MOBILE OPTIMIZED KTX ARRIVAL] */
+        /* 모바일에서는 더 오른쪽으로 이동시켜 버튼을 가리지 않게 함 */
+        @keyframes ktx-arrive-stop-mobile {
             0% {
                 opacity: 0;
-                /* Start: Far Right side */
                 transform: translate3d(80vw, 14vh, -500px) scale(0.5);
                 filter: blur(8px);
             }
             100% {
                 opacity: 1;
-                /* End: 
-                   X축: 30vw (중앙에서 우측으로 이동시켜, 기차 앞머리가 버튼 오른쪽에 오도록 배치)
-                   Y축: 14vh (위로 올리지 않고 하단부에 안정적으로 위치) 
-                */
+                /* Mobile Destination: Further right (60vw) to avoid center button */
+                transform: translate3d(60vw, 14vh, 0px) scale(1);
+                filter: blur(0px);
+            }
+        }
+
+        /* [DESKTOP KTX ARRIVAL] */
+        @keyframes ktx-arrive-stop-desktop {
+            0% {
+                opacity: 0;
+                transform: translate3d(80vw, 14vh, -500px) scale(0.5);
+                filter: blur(8px);
+            }
+            100% {
+                opacity: 1;
+                /* Desktop Destination: Original position (30vw) */
                 transform: translate3d(30vw, 14vh, 0px) scale(1);
                 filter: blur(0px);
             }
         }
         
         .animate-ktx-arrive {
-            /* Run ONCE (no infinite), keep final state (forwards) */
-            /* Duration 2.5s, Ease-out for smooth braking effect */
-            animation: ktx-arrive-stop 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            /* Default to Mobile Animation */
+            animation: ktx-arrive-stop-mobile 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             will-change: transform, opacity;
-            opacity: 0; /* Initially hidden */
-            animation-delay: 0.2s; /* Slight delay before starting */
+            opacity: 0; 
+            animation-delay: 0.2s;
+        }
+
+        /* Switch to Desktop Animation on larger screens */
+        @media (min-width: 768px) {
+            .animate-ktx-arrive {
+                animation-name: ktx-arrive-stop-desktop;
+            }
         }
     </style>
 </head>
@@ -225,11 +242,12 @@
             <!-- Animation Container -->
             <div class="animate-ktx-arrive relative">
                 <!-- User's Train Image -->
-                <!-- Ensure your file is named 'train.png' -->
+                <!-- Mobile: Responsive width (85vw) to prevent broken ratios -->
+                <!-- Desktop: Fixed width (810px) as requested -->
                 <img 
                     src="train.png" 
                     alt="KTX Train Arriving" 
-                    class="w-[486px] md:w-[810px] object-contain drop-shadow-2xl"
+                    class="w-[85vw] max-w-[486px] md:w-[810px] object-contain drop-shadow-2xl"
                     onerror="this.style.display='none';" 
                 >
                 <!-- Fallback box if image is missing/broken (hidden by default unless error) -->
@@ -242,7 +260,8 @@
         <div class="max-w-5xl mx-auto text-center relative z-10">
           
             <!-- Headline -->
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-8 text-white flex flex-col items-center">
+            <!-- Optimized for mobile text wrap (text-3xl) -->
+            <h1 class="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tighter mb-8 text-white flex flex-col items-center">
                 <span class="block mb-4 md:mb-6 leading-tight animate-slide-up">철도 이용자에게 필요한 정보는</span>
                 <span class="block text-[#2997ff] leading-tight animate-slide-up delay-100">
                     <!-- Changed rounded-lg to rounded-none for sharp corners -->
@@ -250,7 +269,8 @@
                 </span>
             </h1>
 
-            <p class="text-[19px] md:text-[21px] font-medium text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10 break-keep animate-slide-up delay-200 tracking-tight">
+            <!-- Subtext optimized for mobile -->
+            <p class="text-base sm:text-[19px] md:text-[21px] font-medium text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10 break-keep animate-slide-up delay-200 tracking-tight">
                 기차를 타기 전에도, 타고 있는 중에도, 그리고 내린 직후에도 말이죠.
             </p>
 
@@ -268,13 +288,13 @@
 
     <!-- NEW SECTION: Problem Statement (iPhone Detail Page Style) -->
     <!-- Added id="problem-section" for scrolling -->
-    <section id="problem-section" class="py-20 px-6">
+    <section id="problem-section" class="py-12 md:py-20 px-6">
         <div class="max-w-6xl mx-auto">
             
             <!-- Section Header -->
-            <div class="text-left mb-20 reveal-on-scroll">
+            <div class="text-left mb-12 md:mb-20 reveal-on-scroll">
                 <!-- Changed h2 to use block spans for explicit vertical spacing preventing overlap -->
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-gray-400">
+                <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-400">
                     <span class="block mb-0 leading-tight">문제는 정보가 없는 것이 아니라,</span>
                     <span class="block text-white leading-relaxed">
                         <!-- Reduced vertical padding to py-0 for the slimmest highlighter look -->
