@@ -24,19 +24,22 @@
             50% { transform: translateY(-12px); }
         }
         .animate-float {
-            animation: float 6s ease-in-out infinite;
+            animation: float 14s ease-in-out infinite;
         }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        @keyframes float-delayed {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .animate-float-delayed {
+            animation: float-delayed 16s ease-in-out infinite 1s;
         }
         
         /* Class to trigger animation on scroll */
         .reveal-on-scroll {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 3.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal-on-scroll.is-visible {
             opacity: 1;
@@ -48,101 +51,150 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-slide-up {
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0; /* Start hidden */
+            animation: slideUp 3.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
         }
         
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
         .delay-500 { animation-delay: 0.5s; }
+        .delay-700 { animation-delay: 0.7s; }
 
         .break-keep {
             word-break: keep-all;
         }
 
-        /* SVG Path Animation for Card 2 */
+        /* SVG Path Animation */
         .draw-path {
-            stroke-dasharray: 500; /* Increased length for a much longer/bolder curve */
-            stroke-dashoffset: 500; /* Initially hidden */
-            transition: stroke-dashoffset 1.4s ease-in-out; /* Slightly longer duration for the longer path */
+            stroke-dasharray: 500;
+            stroke-dashoffset: 500;
+            transition: stroke-dashoffset 4.0s ease-in-out;
         }
         .group:hover .draw-path {
-            stroke-dashoffset: 0; /* Reveal on hover */
+            stroke-dashoffset: 0;
         }
 
-        /* Blinking Animation for Location Icon */
+        /* Blinking Animation */
         @keyframes blink-effect {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.4; transform: scale(0.9); }
         }
-        /* Changed to trigger immediately on hover for Card 4 */
         .group:hover .animate-blink-on-hover {
-            animation: blink-effect 1.5s infinite;
+            animation: blink-effect 4.0s infinite;
         }
 
-        /* [NEW] Notification Arrival Animation ("Ding!") */
+        /* Notification Pop */
         @keyframes notification-pop {
             0% { opacity: 0; transform: translateY(-15px) scale(0.95); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         .animate-notification-pop {
-            /* Triggered via class when visible, using a bouncy bezier */
-            animation: notification-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; 
-            opacity: 0; /* Start hidden */
-            animation-delay: 0.8s; /* Wait for phone to appear */
+            animation: notification-pop 2.0s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            animation-delay: 2.0s;
         }
 
-        /* [NEW] Staggered Checkmark Animation Logic */
-        /* Initially hide list items */
+        /* Pocket Out Animation */
+        @keyframes pocket-out {
+            0% { 
+                opacity: 0;
+                transform: translateY(150px) rotateX(45deg) scale(0.8);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-20px) rotateX(0deg) scale(1.02);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg) scale(1);
+            }
+        }
+        .reveal-on-scroll.is-visible .animate-pocket-out {
+            animation: pocket-out 4.0s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+            transform-origin: center bottom;
+        }
+
+        /* Staggered Checkmark Animation */
         .reveal-on-scroll ul li, 
         .reveal-on-scroll .space-y-6 > div {
             opacity: 0;
-            transform: translateX(-15px);
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
+            transform: translateX(-20px);
+            transition: all 2.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
         }
-        
-        /* Reveal them when parent is visible */
         .reveal-on-scroll.is-visible ul li, 
         .reveal-on-scroll.is-visible .space-y-6 > div {
             opacity: 1;
             transform: translateX(0);
         }
+        .reveal-on-scroll.is-visible ul li:nth-child(1), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(1) { transition-delay: 0.8s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(2), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(2) { transition-delay: 1.3s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(3), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(3) { transition-delay: 1.8s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(4), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(4) { transition-delay: 2.3s; }
 
-        /* Add delays for staggering effect */
-        .reveal-on-scroll.is-visible ul li:nth-child(1), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(1) { transition-delay: 0.2s; }
-        .reveal-on-scroll.is-visible ul li:nth-child(2), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(2) { transition-delay: 0.35s; }
-        .reveal-on-scroll.is-visible ul li:nth-child(3), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(3) { transition-delay: 0.5s; }
-        .reveal-on-scroll.is-visible ul li:nth-child(4), .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(4) { transition-delay: 0.65s; }
-
-        /* Icon Pop Effect */
         .reveal-on-scroll ul li i, 
         .reveal-on-scroll .space-y-6 > div i {
             transform: scale(0);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transition: transform 2.0s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .reveal-on-scroll.is-visible ul li i, 
         .reveal-on-scroll.is-visible .space-y-6 > div i {
             transform: scale(1);
         }
-        /* Icon delays to sync with item appearance */
-        .reveal-on-scroll.is-visible ul li:nth-child(1) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(1) i { transition-delay: 0.3s; }
-        .reveal-on-scroll.is-visible ul li:nth-child(2) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(2) i { transition-delay: 0.45s; }
-        .reveal-on-scroll.is-visible ul li:nth-child(3) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(3) i { transition-delay: 0.6s; }
-        .reveal-on-scroll.is-visible ul li:nth-child(4) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(4) i { transition-delay: 0.75s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(1) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(1) i { transition-delay: 1.0s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(2) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(2) i { transition-delay: 1.5s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(3) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(3) i { transition-delay: 2.0s; }
+        .reveal-on-scroll.is-visible ul li:nth-child(4) i, .reveal-on-scroll.is-visible .space-y-6 > div:nth-child(4) i { transition-delay: 2.5s; }
         
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        html { scroll-behavior: smooth; }
+
+        /* Background Pulse */
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 25s ease-in-out infinite;
+        }
+        
+        .reveal-on-scroll.is-visible .animate-notification-trigger {
+            animation: notification-pop 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; 
+            opacity: 0;
+            animation-delay: 3.5s;
+        }
+
+        /* [REALISTIC KTX APPROACH ANIMATION] */
+        /* 오른쪽 멀리서(작게) 시작해서 왼쪽 앞으로(크게) 튀어나가는 3D 느낌 */
+        @keyframes ktx-rush-in {
+            0% {
+                opacity: 0;
+                transform: translate3d(60vw, -10vh, -500px) scale(0.2) rotateY(-25deg);
+                filter: blur(10px);
+            }
+            10% {
+                opacity: 1;
+                filter: blur(2px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(-120vw, 40vh, 200px) scale(3.5) rotateY(-10deg);
+                filter: blur(0px);
+            }
+        }
+        .animate-ktx-rush {
+            /* 5초 간격으로 매우 빠르고 웅장하게 반복 */
+            animation: ktx-rush-in 6s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+            will-change: transform, opacity;
         }
     </style>
 </head>
-<body class="min-h-screen text-white selection:bg-[#0071e3]/40 bg-[#020617]">
+<body class="min-h-screen text-white selection:bg-[#0071e3]/40 bg-[#020617] overflow-x-hidden">
 
     <!-- Background: Deep Navy Gradient -->
     <div class="fixed inset-0 -z-10 bg-[#020617]">
          <div class="absolute inset-0 bg-gradient-to-b from-[#0f172a] via-[#0B1024] to-[#020617]"></div>
-         <div class="absolute top-0 inset-x-0 h-[800px] bg-blue-500/5 blur-[120px]"></div>
+         <div class="absolute top-0 inset-x-0 h-[800px] bg-blue-500/5 blur-[120px] animate-pulse-slow"></div>
     </div>
 
     <!-- Navigation - Logo Only -->
@@ -152,7 +204,7 @@
                 <img 
                     src="logo.png" 
                     alt="Logo" 
-                    class="h-8 md:h-10 w-auto object-contain"
+                    class="h-8 md:h-10 w-auto object-contain hover:opacity-80 transition-opacity duration-300"
                     onerror="this.onerror=null; this.src='https://via.placeholder.com/120x40/0B1024/FFFFFF?text=Logo';"
                 >
             </div>
@@ -160,28 +212,44 @@
     </nav>
 
     <!-- Hero Section -->
-    <!-- Increased pb-10 to pb-64 to add more space below the button -->
-    <section class="pt-40 pb-64 px-6 relative">
+    <section class="min-h-screen flex items-center justify-center px-6 relative overflow-hidden perspective-[1000px]">
+        
+        <!-- [UPDATED] KTX Image Slot with Motion -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+            <!-- 애니메이션 클래스 적용됨 -->
+            <div class="animate-ktx-rush absolute right-0 top-1/3">
+                <!-- 여기에 사용자가 원하는 사진 파일을 넣으면 됨 -->
+                <!-- 예: src="my-ktx-photo.png" -->
+                <img 
+                    src="train.png" 
+                    alt="KTX Train" 
+                    class="w-[500px] md:w-[1000px] object-contain drop-shadow-2xl"
+                    onerror="this.src='https://via.placeholder.com/1000x500/transparent/FFFFFF?text=Insert+KTX+Image+Here';"
+                >
+            </div>
+        </div>
+
         <div class="max-w-5xl mx-auto text-center relative z-10">
           
             <!-- Headline -->
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-8 text-white animate-slide-up flex flex-col items-center">
-                <span class="block mb-4 md:mb-6 leading-tight">철도 이용자에게 필요한 정보는</span>
-                <span class="block text-[#2997ff] leading-tight">
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-8 text-white flex flex-col items-center">
+                <span class="block mb-4 md:mb-6 leading-tight animate-slide-up">철도 이용자에게 필요한 정보는</span>
+                <span class="block text-[#2997ff] leading-tight animate-slide-up delay-100">
                     <!-- Changed rounded-lg to rounded-none for sharp corners -->
-                    항상 <span class="inline-block font-black text-[1.1em] px-2 rounded-none bg-[#0071e3] text-white mx-1 shadow-[0_0_20px_rgba(0,113,227,0.4)]">지금</span> 입니다.
+                    항상 <span class="inline-block font-black text-[1.1em] px-2 rounded-none bg-[#0071e3] text-white mx-1 shadow-[0_0_20px_rgba(0,113,227,0.4)] hover:scale-105 transition-transform duration-300 cursor-default">지금</span> 입니다.
                 </span>
             </h1>
 
-            <p class="text-[19px] md:text-[21px] font-medium text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10 break-keep animate-slide-up delay-100 tracking-tight">
+            <p class="text-[19px] md:text-[21px] font-medium text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10 break-keep animate-slide-up delay-200 tracking-tight">
                 기차를 타기 전에도, 타고 있는 중에도, 그리고 내린 직후에도 말이죠.
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24 animate-slide-up delay-200">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24 animate-slide-up delay-300">
                 <!-- Added onclick event for smooth scroll -->
-                <button onclick="document.getElementById('problem-section').scrollIntoView({ behavior: 'smooth' })" class="font-medium rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 px-8 py-4 text-[17px] tracking-tight bg-[#0071e3] text-white hover:bg-[#0077ED] shadow-lg shadow-blue-500/30 border border-blue-400/20">
+                <!-- Added hover scale animation -->
+                <button onclick="document.getElementById('problem-section').scrollIntoView({ behavior: 'smooth' })" class="font-medium rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 px-8 py-4 text-[17px] tracking-tight bg-[#0071e3] text-white hover:bg-[#0077ED] shadow-lg shadow-blue-500/30 border border-blue-400/20 hover:scale-105">
                     보러가기
-                    <i data-lucide="arrow-right" class="w-[18px] h-[18px]" stroke-width="2.5"></i>
+                    <i data-lucide="arrow-right" class="w-[18px] h-[18px] group-hover:translate-x-1 transition-transform" stroke-width="2.5"></i>
                 </button>
             </div>
 
@@ -200,7 +268,7 @@
                     <span class="block mb-0 leading-tight">문제는 정보가 없는 것이 아니라,</span>
                     <span class="block text-white leading-relaxed">
                         <!-- Reduced vertical padding to py-0 for the slimmest highlighter look -->
-                        <span class="bg-[#0071e3] px-2 py-0">'지금 내 상황 기준'</span>으로 바로 쓸 수 있는 정보가 없다는 점입니다.
+                        <span class="bg-[#0071e3] px-2 py-0 inline-block hover:scale-[1.02] transition-transform duration-300 origin-left">'지금 내 상황 기준'</span>으로 바로 쓸 수 있는 정보가 없다는 점입니다.
                     </span>
                 </h2>
             </div>
@@ -209,16 +277,17 @@
             <div class="grid grid-cols-1 gap-6">
                 
                 <!-- Card 1: 매진된 열차 -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden">
+                <!-- Added hover lift animation -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Background Decoration Icon: Refresh -->
-                    <!-- Moved from bottom corner to vertical center on the right -->
-                    <div class="absolute -right-6 top-1/2 -translate-y-1/2 opacity-[0.05] group-hover:opacity-10 transition-all duration-700 transform rotate-12 group-hover:rotate-[180deg] pointer-events-none">
+                    <!-- REMOVED opacity-[0.05] group-hover:opacity-10 as requested -->
+                    <div class="absolute -right-6 top-1/2 -translate-y-1/2 transition-all duration-700 transform rotate-12 group-hover:rotate-[180deg] pointer-events-none">
                         <i data-lucide="refresh-cw" class="w-40 h-40 text-white"></i>
                     </div>
 
                     <div class="relative z-10">
-                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/10">
                             <i data-lucide="ticket" class="w-7 h-7"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">매진된 열차</h3>
@@ -228,11 +297,12 @@
 
                 <!-- Card 2: 실시간 위치 확인 -->
                 <!-- Added relative and overflow-hidden for custom animation positioning -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden">
+                <!-- Added hover lift animation -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Content -->
                     <div class="relative z-10 max-w-[70%]">
-                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/10">
                             <i data-lucide="map-pin" class="w-7 h-7"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">실시간 위치 확인</h3>
@@ -261,15 +331,17 @@
                 </div>
 
                 <!-- Card 3: 분실물 신고 -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden">
+                <!-- Added hover lift animation -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Background Decoration Icon: Search -->
-                    <div class="absolute -right-8 top-1/2 -translate-y-1/2 opacity-[0.05] group-hover:opacity-10 transition-all duration-700 transform group-hover:scale-110 group-hover:-rotate-12 pointer-events-none">
+                    <!-- REMOVED opacity-[0.05] group-hover:opacity-10 as requested -->
+                    <div class="absolute -right-8 top-1/2 -translate-y-1/2 transition-all duration-700 transform group-hover:scale-110 group-hover:-rotate-12 pointer-events-none">
                         <i data-lucide="search" class="w-48 h-48 text-white"></i>
                     </div>
 
                     <div class="relative z-10">
-                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/10">
                             <i data-lucide="package-search" class="w-7 h-7"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">분실물 신고</h3>
@@ -278,10 +350,12 @@
                 </div>
 
                 <!-- Card 4: 시설 위치 안내 -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden">
+                <!-- Added hover lift animation -->
+                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Background Decoration: Building Layout with Pin -->
-                    <div class="absolute -right-10 top-1/2 -translate-y-1/2 opacity-[0.05] group-hover:opacity-10 transition-all duration-700 transform group-hover:scale-105 group-hover:rotate-3 pointer-events-none">
+                    <!-- REMOVED opacity-[0.05] group-hover:opacity-10 as requested -->
+                    <div class="absolute -right-10 top-1/2 -translate-y-1/2 transition-all duration-700 transform group-hover:scale-105 group-hover:rotate-3 pointer-events-none">
                         <!-- Custom SVG for Floor Plan / Layout -->
                         <svg width="220" height="220" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <!-- Building Outline (Rounded Rect) -->
@@ -299,7 +373,7 @@
                     </div>
 
                     <div class="relative z-10">
-                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/10">
                             <i data-lucide="navigation" class="w-7 h-7"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">시설 위치 안내</h3>
@@ -314,7 +388,8 @@
     <!-- MOVED & TRANSFORMED: Dashboard -> iPhone Lockscreen Section -->
     <section class="py-24 px-6 relative overflow-hidden">
         <!-- Background Glow -->
-        <div class="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] -z-10"></div>
+        <!-- Added pulse-slow animation -->
+        <div class="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
 
         <div class="max-w-6xl mx-auto">
             <!-- Changed Layout: Grid with balanced spacing -->
@@ -322,9 +397,10 @@
                 
                 <!-- Left Column: iPhone Mockup -->
                 <!-- Aligned to center of the left column for better balance -->
+                <!-- CHANGED: Applied 'animate-pocket-out' triggered by scroll instead of float -->
                 <div class="reveal-on-scroll flex justify-center">
                     <!-- iPhone Bezel -->
-                    <div class="relative w-[300px] h-[640px] md:w-[320px] md:h-[680px] bg-[#1d1d1f] rounded-[3.5rem] p-3 shadow-2xl border-[6px] border-[#333]">
+                    <div class="animate-pocket-out relative w-[300px] h-[600px] md:w-[320px] md:h-[680px] bg-[#1d1d1f] rounded-[3.5rem] p-3 shadow-2xl border-[6px] border-[#333]">
                         <!-- Screen -->
                         <!-- Changed pt-12 to pt-4 to move status bar up -->
                         <div class="relative w-full h-full bg-white rounded-[2.8rem] overflow-hidden flex flex-col items-center pt-4 text-[#1d1d1f] border border-gray-200">
@@ -354,8 +430,8 @@
                                 <!-- Notification / Widget Stack -->
                                 <div class="w-full space-y-3">
                                     <!-- Aligno Live Activity Widget (Cancellation Ticket Alert) -->
-                                    <!-- ADDED: animate-notification-pop class -->
-                                    <div class="animate-notification-pop w-full bg-white rounded-[24px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 relative overflow-hidden">
+                                    <!-- CHANGED: animate-notification-pop to animate-notification-trigger for scroll trigger control -->
+                                    <div class="animate-notification-trigger w-full bg-white rounded-[24px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 relative overflow-hidden">
                                         
                                         <!-- Top Row -->
                                         <div class="flex items-center justify-between mb-4">
@@ -404,10 +480,10 @@
 
                             <!-- Bottom Buttons (Dark semi-transparent on white) -->
                             <div class="w-full px-10 pb-10 flex justify-between items-end mt-auto">
-                                <div class="w-12 h-12 rounded-full bg-black/5 backdrop-blur-xl flex items-center justify-center border border-black/5">
+                                <div class="w-12 h-12 rounded-full bg-black/5 backdrop-blur-xl flex items-center justify-center border border-black/5 hover:bg-black/10 transition-colors">
                                     <i data-lucide="flashlight" class="w-6 h-6 text-gray-600 fill-current"></i>
                                 </div>
-                                <div class="w-12 h-12 rounded-full bg-black/5 backdrop-blur-xl flex items-center justify-center border border-black/5">
+                                <div class="w-12 h-12 rounded-full bg-black/5 backdrop-blur-xl flex items-center justify-center border border-black/5 hover:bg-black/10 transition-colors">
                                     <i data-lucide="camera" class="w-6 h-6 text-gray-600 fill-current"></i>
                                 </div>
                             </div>
@@ -421,7 +497,8 @@
                 <!-- Right Column: Content -->
                 <div class="reveal-on-scroll text-left">
                     <span class="text-blue-400 font-semibold tracking-wide uppercase text-sm mb-4 block">기능 1</span>
-                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                    <!-- Changed line-height from 2.0 to 1.3 as requested -->
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight" style="line-height: 1.3 !important;">
                         취소표 실시간 알림.<br>
                         <span class="text-gray-400">
                             매진된 열차의 취소표를<br>
@@ -488,7 +565,8 @@
                 </div>
 
                 <!-- Visual Content (Right) -->
-                <div class="reveal-on-scroll order-1 md:order-2">
+                <!-- Added floating animation -->
+                <div class="reveal-on-scroll order-1 md:order-2 animate-float-delayed">
                     <div class="aspect-video bg-[#1d1d1f] rounded-[2rem] border border-white/10 flex items-center justify-center relative overflow-hidden group hover:border-white/20 transition-all duration-500 shadow-2xl p-6 md:p-10">
                         <!-- Background Glow -->
                         <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/5 opacity-60"></div>
@@ -525,14 +603,14 @@
                             <!-- Stats Grid -->
                             <div class="grid grid-cols-2 gap-3">
                                 <!-- Delay Info -->
-                                <div class="bg-[#3a3a3c]/50 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center gap-1">
+                                <div class="bg-[#3a3a3c]/50 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center gap-1 hover:bg-[#3a3a3c] transition-colors">
                                     <span class="text-[10px] font-semibold text-white/50">열차 지연</span>
                                     <span class="text-sm font-bold text-[#ff453a] flex items-center gap-1">
                                         <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> +3분
                                     </span>
                                 </div>
                                 <!-- Arrival Info -->
-                                <div class="bg-[#3a3a3c]/50 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center gap-1">
+                                <div class="bg-[#3a3a3c]/50 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center gap-1 hover:bg-[#3a3a3c] transition-colors">
                                     <span class="text-[10px] font-semibold text-white/50">총 도착시간</span>
                                     <span class="text-sm font-bold text-white tabular-nums">14:25</span>
                                 </div>
@@ -549,7 +627,8 @@
         <div class="max-w-6xl mx-auto">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <!-- Visual Content (Left - Alternating Layout) -->
-                <div class="reveal-on-scroll">
+                <!-- Added floating animation -->
+                <div class="reveal-on-scroll animate-float">
                     <div class="aspect-video bg-[#1d1d1f] rounded-[2rem] border border-white/10 flex items-center justify-center relative overflow-hidden group hover:border-white/20 transition-all duration-500 shadow-2xl p-8">
                         <!-- Background Glow -->
                         <div class="absolute inset-0 bg-gradient-to-bl from-purple-500/10 via-transparent to-purple-500/5 opacity-60"></div>
@@ -576,13 +655,13 @@
 
                             <!-- Item Type & Photo -->
                             <div class="grid grid-cols-2 gap-3">
-                                <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex flex-col gap-1">
+                                <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex flex-col gap-1 hover:bg-[#3a3a3c] transition-colors cursor-pointer">
                                     <span class="text-[10px] text-white/50">물품 종류</span>
                                     <div class="text-xs font-bold text-white flex items-center gap-1">
                                         <i data-lucide="headphones" class="w-3 h-3 text-white/80"></i> 전자제품
                                     </div>
                                 </div>
-                                <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex flex-col gap-1 relative overflow-hidden">
+                                <div class="bg-[#3a3a3c]/50 rounded-xl p-3 border border-white/5 flex flex-col gap-1 relative overflow-hidden hover:bg-[#3a3a3c] transition-colors cursor-pointer">
                                     <span class="text-[10px] text-white/50">사진 첨부</span>
                                     <div class="flex items-center gap-1 text-xs text-purple-400 font-bold">
                                         1장 완료
@@ -595,7 +674,7 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <button class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3 rounded-xl transition-colors shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2">
+                            <button class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3 rounded-xl transition-all shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2 active:scale-95">
                                 신고 접수하기
                                 <i data-lucide="send" class="w-3 h-3"></i>
                             </button>
@@ -663,7 +742,8 @@
                 </div>
 
                 <!-- Visual Content (Right) -->
-                <div class="reveal-on-scroll order-1 md:order-2">
+                <!-- Added floating animation -->
+                <div class="reveal-on-scroll order-1 md:order-2 animate-float-delayed">
                     <div class="aspect-video bg-[#1d1d1f] rounded-[2rem] border border-white/10 flex items-center justify-center relative overflow-hidden group hover:border-white/20 transition-all duration-500 shadow-2xl p-8">
                         <!-- Background Glow -->
                         <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-emerald-500/5 opacity-60"></div>
@@ -820,10 +900,11 @@
                     <div class="flex justify-center mt-6">
                         <div class="flex gap-3 w-full max-w-[320px]">
                             <!-- Buttons kept same size, preventing shrink -->
-                            <button id="btn-train" onclick="switchFacilityView('train')" class="flex-1 bg-emerald-600 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-lg shadow-emerald-900/20 hover:bg-emerald-500 border border-white/10">
+                            <!-- Added active:scale-95 -->
+                            <button id="btn-train" onclick="switchFacilityView('train')" class="flex-1 bg-emerald-600 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-lg shadow-emerald-900/20 hover:bg-emerald-500 border border-white/10 active:scale-95">
                                 열차 내부
                             </button>
-                            <button id="btn-station" onclick="switchFacilityView('station')" class="flex-1 bg-[#2c2c2e] text-gray-400 text-sm font-bold py-3 rounded-xl transition-all hover:bg-[#3a3a3c] hover:text-white border border-white/10">
+                            <button id="btn-station" onclick="switchFacilityView('station')" class="flex-1 bg-[#2c2c2e] text-gray-400 text-sm font-bold py-3 rounded-xl transition-all hover:bg-[#3a3a3c] hover:text-white border border-white/10 active:scale-95">
                                 역사 내부
                             </button>
                         </div>
@@ -840,9 +921,10 @@
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 
                 <!-- Visual Content (Left - iPhone Mockup) -->
+                <!-- Added floating animation -->
                 <div class="reveal-on-scroll flex justify-center md:justify-start">
                     <!-- iPhone Bezel -->
-                    <div class="relative w-[300px] h-[600px] bg-[#1d1d1f] rounded-[3rem] p-3 shadow-2xl border-[6px] border-[#333]">
+                    <div class="animate-pocket-out relative w-[300px] h-[600px] bg-[#1d1d1f] rounded-[3rem] p-3 shadow-2xl border-[6px] border-[#333]">
                         <!-- Screen -->
                         <div class="relative w-full h-full bg-white rounded-[2.5rem] overflow-hidden flex flex-col items-center pt-4 text-[#1d1d1f] border border-gray-200">
                             
@@ -914,7 +996,7 @@
                 <!-- Text Content (Right) -->
                 <div class="reveal-on-scroll text-left">
                     <span class="text-gray-400 font-semibold tracking-wide uppercase text-sm mb-4 block bg-white/10 px-3 py-1 rounded-full w-fit">실용형 AI 솔루션</span>
-                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight" style="line-height: 1.3 !important;">
                         KORAIL NOW.<br>
                         <span class="text-[#0071e3]">지금 필요한 정보를<br>바로 알려주는</span>
                     </h2>
@@ -976,7 +1058,8 @@
     <!-- NEW SECTION: Final CTA (Based on Photo Content) -->
     <section class="py-32 px-6 bg-[#0B1024] border-t border-white/5 relative overflow-hidden">
         <!-- Center Glow -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] -z-10"></div>
+        <!-- Added pulse-slow animation -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
 
         <div class="max-w-4xl mx-auto text-center">
             
@@ -989,27 +1072,31 @@
                 지금 필요한 정보를 가장 빠르고 정확하게 제공합니다.
             </p>
 
-            <button class="reveal-on-scroll delay-200 font-medium rounded-full transition-all active:scale-95 inline-flex items-center justify-center gap-2 px-10 py-5 text-lg tracking-tight bg-[#0071e3] text-white hover:bg-[#0077ED] shadow-xl shadow-blue-500/30 border border-blue-400/20 mb-20">
+            <!-- Added hover scale animation -->
+            <button class="reveal-on-scroll delay-200 font-medium rounded-full transition-all active:scale-95 inline-flex items-center justify-center gap-2 px-10 py-5 text-lg tracking-tight bg-[#0071e3] text-white hover:bg-[#0077ED] shadow-xl shadow-blue-500/30 border border-blue-400/20 mb-20 hover:scale-105">
                 지금 시작하기
-                <i data-lucide="arrow-right" class="w-5 h-5" stroke-width="2.5"></i>
+                <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform" stroke-width="2.5"></i>
             </button>
 
             <!-- 3 Features Grid from Photo -->
             <div class="grid md:grid-cols-3 gap-6">
                 <!-- Item 1 -->
-                <div class="reveal-on-scroll group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300">
+                <!-- Added hover lift animation -->
+                <div class="reveal-on-scroll group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                     <div class="text-2xl font-bold text-white mb-2">24/7</div>
                     <div class="text-gray-400 font-medium">실시간 지원</div>
                 </div>
 
                 <!-- Item 2 -->
-                <div class="reveal-on-scroll delay-100 group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300">
+                <!-- Added hover lift animation -->
+                <div class="reveal-on-scroll delay-100 group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                     <div class="text-2xl font-bold text-white mb-2">AI</div>
                     <div class="text-gray-400 font-medium">지능형 분석</div>
                 </div>
 
                 <!-- Item 3 -->
-                <div class="reveal-on-scroll delay-200 group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300">
+                <!-- Added hover lift animation -->
+                <div class="reveal-on-scroll delay-200 group p-8 rounded-[24px] bg-[#1d1d1f] border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                     <div class="text-2xl font-bold text-white mb-2">즉시</div>
                     <div class="text-gray-400 font-medium">빠른 응답</div>
                 </div>
@@ -1039,7 +1126,7 @@
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.1
+            threshold: 0.25 // Trigger when 25% visible
         };
 
         const observer = new IntersectionObserver((entries, observer) => {
@@ -1064,7 +1151,7 @@
 
             // Fixed Button Classes to prevent shrinking (removed active:scale-95 from original button logic)
             // Consistent classes: flex-1, text-sm, font-bold, py-3, rounded-xl, transition-all, border
-            const commonClasses = "flex-1 text-sm font-bold py-3 rounded-xl transition-all border border-white/10";
+            const commonClasses = "flex-1 text-sm font-bold py-3 rounded-xl transition-all border border-white/10 active:scale-95";
             
             if (view === 'train') {
                 trainView.classList.remove('hidden');
