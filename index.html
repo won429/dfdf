@@ -165,22 +165,23 @@
         }
 
         /* [MOBILE OPTIMIZED KTX ARRIVAL] */
-        /* 모바일에서는 더 오른쪽으로 이동시켜 버튼을 가리지 않게 함 */
+        /* 모바일: 중앙보다 살짝 오른쪽(15vw)에 위치시켜 잘리지 않고 보이게 함 */
         @keyframes ktx-arrive-stop-mobile {
             0% {
                 opacity: 0;
-                transform: translate3d(80vw, 14vh, -500px) scale(0.5);
+                transform: translate3d(80vw, 10vh, -500px) scale(0.5);
                 filter: blur(8px);
             }
             100% {
                 opacity: 1;
-                /* Mobile Destination: Further right (60vw) to avoid center button */
-                transform: translate3d(60vw, 14vh, 0px) scale(1);
+                /* Mobile Destination: Center-ish (15vw right) to stay visible on narrow screens */
+                transform: translate3d(15vw, 10vh, 0px) scale(1.1);
                 filter: blur(0px);
             }
         }
 
         /* [DESKTOP KTX ARRIVAL] */
+        /* 데스크탑: 기존대로 버튼 우측(30vw)에 배치 */
         @keyframes ktx-arrive-stop-desktop {
             0% {
                 opacity: 0;
@@ -189,7 +190,7 @@
             }
             100% {
                 opacity: 1;
-                /* Desktop Destination: Original position (30vw) */
+                /* Desktop Destination: Right of center button (30vw) */
                 transform: translate3d(30vw, 14vh, 0px) scale(1);
                 filter: blur(0px);
             }
@@ -203,7 +204,7 @@
             animation-delay: 0.2s;
         }
 
-        /* Switch to Desktop Animation on larger screens */
+        /* Switch to Desktop Animation on larger screens (md breakpoint) */
         @media (min-width: 768px) {
             .animate-ktx-arrive {
                 animation-name: ktx-arrive-stop-desktop;
@@ -226,7 +227,7 @@
                 <img 
                     src="logo.png" 
                     alt="Logo" 
-                    class="h-12 md:h-14 w-auto object-contain hover:opacity-80 transition-opacity duration-300"
+                    class="h-10 md:h-14 w-auto object-contain hover:opacity-80 transition-opacity duration-300"
                     onerror="this.onerror=null; this.src='https://via.placeholder.com/120x40/0B1024/FFFFFF?text=Logo';"
                 >
             </div>
@@ -242,8 +243,8 @@
             <!-- Animation Container -->
             <div class="animate-ktx-arrive relative">
                 <!-- User's Train Image -->
-                <!-- Mobile: Responsive width (85vw) to prevent broken ratios -->
-                <!-- Desktop: Fixed width (810px) as requested -->
+                <!-- Mobile: w-[85vw] ensures it fits within screen width nicely -->
+                <!-- Desktop: Fixed width (810px) -->
                 <img 
                     src="train.png" 
                     alt="KTX Train Arriving" 
@@ -260,21 +261,21 @@
         <div class="max-w-5xl mx-auto text-center relative z-10">
           
             <!-- Headline -->
-            <!-- Optimized for mobile text wrap (text-3xl) -->
-            <h1 class="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tighter mb-8 text-white flex flex-col items-center">
-                <span class="block mb-4 md:mb-6 leading-tight animate-slide-up">철도 이용자에게 필요한 정보는</span>
+            <!-- Optimized for mobile: text-4xl -> md:text-7xl -->
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter mb-6 md:mb-8 text-white flex flex-col items-center">
+                <span class="block mb-3 md:mb-6 leading-tight animate-slide-up">철도 이용자에게 필요한 정보는</span>
                 <span class="block text-[#2997ff] leading-tight animate-slide-up delay-100">
                     <!-- Changed rounded-lg to rounded-none for sharp corners -->
                     항상 <span class="inline-block font-black text-[1.1em] px-2 rounded-none bg-[#0071e3] text-white mx-1 shadow-[0_0_20px_rgba(0,113,227,0.4)] hover:scale-105 transition-transform duration-300 cursor-default">지금</span> 입니다.
                 </span>
             </h1>
 
-            <!-- Subtext optimized for mobile -->
-            <p class="text-base sm:text-[19px] md:text-[21px] font-medium text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10 break-keep animate-slide-up delay-200 tracking-tight">
+            <!-- Subtext optimized for mobile: text-base with better line height -->
+            <p class="text-base sm:text-[19px] md:text-[21px] font-medium text-gray-400 leading-relaxed max-w-2xl mx-auto mb-16 md:mb-10 break-keep animate-slide-up delay-200 tracking-tight px-4">
                 기차를 타기 전에도, 타고 있는 중에도, 그리고 내린 직후에도 말이죠.
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24 animate-slide-up delay-300">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 md:mb-24 animate-slide-up delay-300">
                 <!-- Added onclick event for smooth scroll -->
                 <!-- Added hover scale animation -->
                 <button onclick="document.getElementById('problem-section').scrollIntoView({ behavior: 'smooth' })" class="font-medium rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 px-8 py-4 text-[17px] tracking-tight bg-[#0071e3] text-white hover:bg-[#0077ED] shadow-lg shadow-blue-500/30 border border-blue-400/20 hover:scale-105">
@@ -308,12 +309,12 @@
                 
                 <!-- Card 1: 매진된 열차 -->
                 <!-- Added hover lift animation -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
+                <div class="reveal-on-scroll group p-8 md:p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Background Decoration Icon: Refresh -->
                     <!-- REMOVED opacity-[0.05] group-hover:opacity-10 as requested -->
                     <div class="absolute -right-6 top-1/2 -translate-y-1/2 transition-all duration-700 transform rotate-12 group-hover:rotate-[180deg] pointer-events-none">
-                        <i data-lucide="refresh-cw" class="w-40 h-40 text-white"></i>
+                        <i data-lucide="refresh-cw" class="w-32 h-32 md:w-40 md:h-40 text-white"></i>
                     </div>
 
                     <div class="relative z-10">
@@ -328,10 +329,10 @@
                 <!-- Card 2: 실시간 위치 확인 -->
                 <!-- Added relative and overflow-hidden for custom animation positioning -->
                 <!-- Added hover lift animation -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
+                <div class="reveal-on-scroll group p-8 md:p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Content -->
-                    <div class="relative z-10 max-w-[70%]">
+                    <div class="relative z-10 max-w-[80%] md:max-w-[70%]">
                         <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/10">
                             <i data-lucide="map-pin" class="w-7 h-7"></i>
                         </div>
@@ -340,7 +341,7 @@
                     </div>
 
                     <!-- Custom BOLD S-Curve Path Animation (Right Side) -->
-                    <div class="absolute top-1/2 right-10 -translate-y-1/2 w-48 h-40 pointer-events-none hidden md:block">
+                    <div class="absolute top-1/2 right-4 md:right-10 -translate-y-1/2 w-32 h-24 md:w-48 md:h-40 pointer-events-none hidden md:block">
                         <svg width="100%" height="100%" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg" class="overflow-visible">
                             <!-- Start Point -->
                             <circle cx="100" cy="10" r="4" class="fill-gray-600" />
@@ -362,12 +363,12 @@
 
                 <!-- Card 3: 분실물 신고 -->
                 <!-- Added hover lift animation -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
+                <div class="reveal-on-scroll group p-8 md:p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Background Decoration Icon: Search -->
                     <!-- REMOVED opacity-[0.05] group-hover:opacity-10 as requested -->
                     <div class="absolute -right-8 top-1/2 -translate-y-1/2 transition-all duration-700 transform group-hover:scale-110 group-hover:-rotate-12 pointer-events-none">
-                        <i data-lucide="search" class="w-48 h-48 text-white"></i>
+                        <i data-lucide="search" class="w-32 h-32 md:w-48 md:h-48 text-white"></i>
                     </div>
 
                     <div class="relative z-10">
@@ -381,7 +382,7 @@
 
                 <!-- Card 4: 시설 위치 안내 -->
                 <!-- Added hover lift animation -->
-                <div class="reveal-on-scroll group p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
+                <div class="reveal-on-scroll group p-8 md:p-10 rounded-[32px] bg-[#1d1d1f]/60 backdrop-blur-xl border border-white/5 hover:bg-[#1d1d1f]/80 transition-all duration-500 delay-100 relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl">
                     
                     <!-- Background Decoration: Building Layout with Pin -->
                     <!-- REMOVED opacity-[0.05] group-hover:opacity-10 as requested -->
