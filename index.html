@@ -164,28 +164,33 @@
             animation-delay: 3.5s;
         }
 
-        /* [REALISTIC KTX APPROACH ANIMATION] */
-        /* 오른쪽 멀리서(작게) 시작해서 왼쪽 앞으로(크게) 튀어나가는 3D 느낌 */
-        @keyframes ktx-rush-in {
+        /* [UPDATED KTX ARRIVAL ANIMATION] */
+        /* Start from far right/top, arrive at center/bottom and STOP */
+        @keyframes ktx-arrive-stop {
             0% {
                 opacity: 0;
-                transform: translate3d(60vw, -10vh, -500px) scale(0.2) rotateY(-25deg);
-                filter: blur(10px);
-            }
-            10% {
-                opacity: 1;
-                filter: blur(2px);
+                /* Start: Far Right side */
+                transform: translate3d(80vw, 14vh, -500px) scale(0.5);
+                filter: blur(8px);
             }
             100% {
                 opacity: 1;
-                transform: translate3d(-120vw, 40vh, 200px) scale(3.5) rotateY(-10deg);
+                /* End: 
+                   X축: 30vw (중앙에서 우측으로 이동시켜, 기차 앞머리가 버튼 오른쪽에 오도록 배치)
+                   Y축: 14vh (위로 올리지 않고 하단부에 안정적으로 위치) 
+                */
+                transform: translate3d(30vw, 14vh, 0px) scale(1);
                 filter: blur(0px);
             }
         }
-        .animate-ktx-rush {
-            /* 5초 간격으로 매우 빠르고 웅장하게 반복 */
-            animation: ktx-rush-in 6s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+        
+        .animate-ktx-arrive {
+            /* Run ONCE (no infinite), keep final state (forwards) */
+            /* Duration 2.5s, Ease-out for smooth braking effect */
+            animation: ktx-arrive-stop 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             will-change: transform, opacity;
+            opacity: 0; /* Initially hidden */
+            animation-delay: 0.2s; /* Slight delay before starting */
         }
     </style>
 </head>
@@ -204,7 +209,7 @@
                 <img 
                     src="logo.png" 
                     alt="Logo" 
-                    class="h-8 md:h-10 w-auto object-contain hover:opacity-80 transition-opacity duration-300"
+                    class="h-12 md:h-14 w-auto object-contain hover:opacity-80 transition-opacity duration-300"
                     onerror="this.onerror=null; this.src='https://via.placeholder.com/120x40/0B1024/FFFFFF?text=Logo';"
                 >
             </div>
@@ -214,18 +219,23 @@
     <!-- Hero Section -->
     <section class="min-h-screen flex items-center justify-center px-6 relative overflow-hidden perspective-[1000px]">
         
-        <!-- [UPDATED] KTX Image Slot with Motion -->
+        <!-- [UPDATED] KTX Image Layer -->
+        <!-- Centered container to establish coordinate system -->
         <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <!-- 애니메이션 클래스 적용됨 -->
-            <div class="animate-ktx-rush absolute right-0 top-1/3">
-                <!-- 여기에 사용자가 원하는 사진 파일을 넣으면 됨 -->
-                <!-- 예: src="my-ktx-photo.png" -->
+            <!-- Animation Container -->
+            <div class="animate-ktx-arrive relative">
+                <!-- User's Train Image -->
+                <!-- Ensure your file is named 'train.png' -->
                 <img 
                     src="train.png" 
-                    alt="KTX Train" 
-                    class="w-[500px] md:w-[1000px] object-contain drop-shadow-2xl"
-                    onerror="this.src='https://via.placeholder.com/1000x500/transparent/FFFFFF?text=Insert+KTX+Image+Here';"
+                    alt="KTX Train Arriving" 
+                    class="w-[486px] md:w-[810px] object-contain drop-shadow-2xl"
+                    onerror="this.style.display='none';" 
                 >
+                <!-- Fallback box if image is missing/broken (hidden by default unless error) -->
+                <div class="absolute inset-0 border-2 border-dashed border-white/20 flex items-center justify-center text-white/30 hidden">
+                    KTX Image Position
+                </div>
             </div>
         </div>
 
